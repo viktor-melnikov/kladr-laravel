@@ -1,0 +1,22 @@
+{
+    "name": "viktor-melnikov/kladr-laravel",
+    "description": "Api КЛАДР for laravel",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Viktor Melnikov",
+            "email": "vik.melnikov@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.6",
+        "viktor-melnikov/requester": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kladr\\": "src/"
+        }
+    }
+}
