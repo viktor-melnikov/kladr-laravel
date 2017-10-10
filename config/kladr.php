@@ -8,22 +8,18 @@
 
 return [
 
-    'kladr' => [
+    'url'        => 'http://kladr-api.ru/api.php',
+    'secret-key' => '',
 
-        'url'        => 'http://kladr-api.ru/api.php',
-        'secret-key' => '',
-
-        'log' => [
-            'enabled' => env( 'KLADR_LOG', true ),
-            'driver'  => [
-                'class'   => \Requester\Logger\Develop::class,
-                'options' => [
-                    'channel' => 'kladr',
-                    'path'    => env( 'KLADR_PATH', storage_path( 'logs/kladr/' . date( 'Y/m/d' ) ) ),
-                ],
+    'log' => [
+        'enabled' => env( 'KLADR_LOG', false ),
+        'driver'  => [
+            'class'   => \Requester\Logger\Develop::class,
+            'options' => [
+                'channel' => 'kladr',
+                'path'    => env( 'KLADR_PATH', storage_path( 'logs/kladr/' . date( 'Y/m/d' ) ) ),
             ],
         ],
-
     ],
 
 ];

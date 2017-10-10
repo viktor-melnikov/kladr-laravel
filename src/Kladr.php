@@ -8,11 +8,6 @@
 
 namespace Kladr;
 
-use Illuminate\Support\Facades\Config;
-use Requester\Http;
-use Requester\Request;
-
-
 /**
  * Class Kladr
  *
@@ -20,41 +15,47 @@ use Requester\Request;
  */
 class Kladr
 {
-    protected $request;
+    private $api = null;
 
-    private $query = null;
-
-    /**
-     * PepsicoCrm constructor.
-     *
-     * @param $config
-     */
-    public function __construct( $config )
+    public function __construct()
     {
-        $this->query = new Query( $config['secret-key'] );
-
-        $this->request = ( new Request() )
-            ->setMethod( Http::GET )
-            ->setConfig( $config )
-            ->setHandler( KladrHandler::class );
+        $this->api = new KladrApi( config( 'kladr' ) );
     }
 
-    public function get()
+    public function search( $q = null, $type = null, $parent_id = null, $parent_type = ObjectType::Region )
     {
-        return $this->request
-            ->setAlias( 'kladr_' . $this->query->contentType )
-            ->body( $this->query->request )
-            ->send();
-    }
+        $search = $this->api->find( $q )->type( $type );
 
-    public function __call( $name, $arguments )
-    {
-        if ( method_exists( $this->query, $name ) ) {
-            call_user_func_array( [ $this->query, $name ], $arguments );
+        if ( $parent_id )
+        {
 
-            return $this;
+            if ( str_contains( $parent_id, ';' ) )
+            {
+                $parent_id = explode( ';', $parent_id )[ 0 ];
+            }
+
+            $search = $search->parent( $parent_type, (string)$parent_id );
         }
 
-        //throw new MethodNotFoundException( 'Method not found', 'Query', $name );
+        $search = $search->options( [
+                                        'limit' => 15,
+                                        //'WithParent' => true
+                                    ] )->get();
+
+        $data = [];
+
+        dd($search[ 'result' ]);
+
+        foreach ( $search[ 'result' ] as $item )
+        {
+            $data[] = [
+                'text' => isset( $item[ 'type' ] ) ? $item[ 'name' ] . ' ' . $item[ 'type' ] : $item[ 'name' ],
+                'id'   => $item[ 'id' ] . ';' . $item[ 'name' ] . ';' . $item[ 'type' ],
+            ];
+        }
+
+        dd( $data );
+
+        return response()->json( [ 'q' => $q, 'results' => $data ] );
     }
 }

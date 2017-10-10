@@ -13,7 +13,7 @@ class Query
 
     private $request = [];
 
-    public function __construct( $token )
+    public function __construct( $token = null )
     {
         /*if ( empty( $token ) ) {
             abort( 400, 'Token is empty' );

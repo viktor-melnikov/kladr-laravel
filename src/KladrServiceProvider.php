@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 
 class KladrServiceProvider extends ServiceProvider
 {
+    protected $defer = false;
+
     /**
      * Bootstrap the application services.
      *
@@ -13,6 +15,9 @@ class KladrServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->publishes( [
+                              __DIR__ . '/../config/kladr.php' => config_path( 'kladr.php' ),
+                          ], 'kladr' );
     }
 
     /**
@@ -26,7 +31,14 @@ class KladrServiceProvider extends ServiceProvider
 
         $this->app->singleton( Kladr::class, function ( $app )
         {
-            return new Kladr( $app[ 'config' ][ 'kladr' ] );
+            return new Kladr();
         } );
+
+        $this->app->alias( Kladr::class, 'kladr' );
+    }
+
+    public function provides()
+    {
+        return [ 'kladr' ];
     }
 }
