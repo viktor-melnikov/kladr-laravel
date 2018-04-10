@@ -12,7 +12,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.6",
-        "viktor-melnikov/requester": "^1.0"
+        "viktor-melnikov/requester": "^1.2"
     },
     "autoload": {
         "psr-4": {
