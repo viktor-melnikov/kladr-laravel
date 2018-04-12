@@ -44,8 +44,6 @@ class Kladr
 
         $data = [];
 
-        dd($search[ 'result' ]);
-
         foreach ( $search[ 'result' ] as $item )
         {
             $data[] = [
