@@ -54,8 +54,6 @@ class Kladr
             ];
         }
 
-        dd( $data );
-
         return response()->json( [ 'q' => $q, 'results' => $data ] );
     }
 }
