@@ -42,16 +42,6 @@ class Kladr
                                         //'WithParent' => true
                                     ] )->get();
 
-        $data = [];
-
-        foreach ( $search[ 'result' ] as $item )
-        {
-            $data[] = [
-                'text' => isset( $item[ 'type' ] ) ? $item[ 'name' ] . ' ' . $item[ 'type' ] : $item[ 'name' ],
-                'id'   => $item[ 'id' ] . ';' . $item[ 'name' ] . ';' . $item[ 'type' ],
-            ];
-        }
-
-        return $data;
+        return $search[ 'result' ];
     }
 }
